@@ -1,0 +1,44 @@
+jcb <> en duracion
+
+
+
+
+
+
+PreparedStatement PS = CN.prepareStatement("");
+PS.executeUpdate();
+
+
+
+
+
+(jDateChooser2.getDate() == null || jDateChooser3.getDate() == null || busquedaTurno.getSelectedItem().equals("Turno") || busquedaTelar.getSelectedItem().equals("Telar") || busquedaCodigo.getSelectedItem().equals("Codigo"))
+
+
+
+String formato2 = jDateChooser2.getDateFormatString();
+Date date2 = jDateChooser2.getDate();
+SimpleDateFormat sdfe2 = new SimpleDateFormat("yyyy-MM-dd");
+String fec1 = String.valueOf(sdfe2.format(date2));
+//******jdc3
+String formato3 = jDateChooser3.getDateFormatString();
+Date date3 = jDateChooser3.getDate();
+SimpleDateFormat sdfe3 = new SimpleDateFormat("yyyy-MM-dd");
+String fec3 = String.valueOf(sdfe3.format(date3));
+//**********
+String turno = (String) busquedaTurno.getSelectedItem();
+int telar = busquedaTelar.getSelectedIndex();
+String codigo = (String) busquedaCodigo.getSelectedItem();
+System.out.println("" + fec1 + fec3 + turno + telar + codigo);
+jTable1.setModel(filtro(fec1, fec3, turno, telar, codigo));
+
+
+DatosBD.setFocusable(false);
+DatosBD = new rojerusan.RSTableMetro(){
+public boolean isCellEditable(int rowIndex, int columnIndex) {
+        return false;
+    }
+};
+
+
+select ID,Fecha,Inicio,Fin,timestampdiff(minute,Inicio,Fin) as Duracion,Turno.turno,Telar,Tipo.Codigo,Demora.Descripcion,tipo.descripcion from demora inner join turno inner join tipo where Demora.Turno=Turno.IDTurno and Demora.Tipo=Tipo.IDTipo order by demora.ID;
